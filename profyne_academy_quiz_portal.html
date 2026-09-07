@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PROFYNE ACADEMY - Learn with Raihan Sir | Quiz Portal</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        profyne: {
+                            50: '#f0f5ff',
+                            100: '#e0eaff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            900: '#0f172a',
+                            gold: '#f59e0b'
+                        }
+                    },
+                    animation: {
+                        'blob': 'blob 7s infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+        }
+        .glass-header {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.5);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(99, 102, 241, 0.4);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(99, 102, 241, 0.7);
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen selection:bg-indigo-500 selection:text-white relative overflow-x-hidden transition-colors duration-300">
+
+    <!-- Decorative background blobs -->
+    <div class="absolute top-0 -left-10 w-[500px] h-[500px] bg-indigo-600/20 rounded-full filter blur-[140px] pointer-events-none animate-blob"></div>
+    <div class="absolute top-1/2 -right-10 w-[500px] h-[500px] bg-purple-600/20 rounded-full filter blur-[140px] pointer-events-none animate-blob animation-delay-2000"></div>
+    <div class="absolute -bottom-20 left-1/3 w-[500px] h-[500px] bg-pink-600/15 rounded-full filter blur-[140px] pointer-events-none animate-blob animation-delay-4000"></div>
+
+    <!-- Header / Navbar -->
+    <header class="glass-header sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-500 text-white p-3 rounded-2xl shadow-lg shadow-indigo-500/30 ring-1 ring-white/20 flex items-center justify-center">
+                    <i data-lucide="graduation-cap" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl sm:text-2xl font-black bg-gradient-to-r from-white via-indigo-200 to-amber-300 bg-clip-text text-transparent tracking-tight">PROFYNE ACADEMY</h1>
+                    <p class="text-[10px] font-semibold text-indigo-400 tracking-wider uppercase">Learn with Raihan Sir</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-3 sm:space-x-4">
+                <!-- Theme Toggle Button -->
+                <button onclick="toggleDarkMode()" class="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 transition border border-white/10 shadow-sm" title="Toggle Theme">
+                    <i id="theme-icon" data-lucide="sun" class="w-4 h-4 text-amber-400"></i>
+                </button>
+
+                <!-- Navigation Tabs -->
+                <div class="flex bg-slate-900/90 p-1.5 rounded-2xl border border-white/10 shadow-inner">
+                    <button onclick="switchTab('student')" id="nav-student" class="px-4 sm:px-5 py-2 rounded-xl font-semibold text-sm transition bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg flex items-center space-x-2">
+                        <i data-lucide="laptop-2" class="w-4 h-4"></i>
+                        <span class="hidden sm:inline">Student Portal</span>
+                    </button>
+                    <button onclick="switchTab('admin')" id="nav-admin" class="px-4 sm:px-5 py-2 rounded-xl font-semibold text-sm transition text-slate-400 hover:text-white flex items-center space-x-2">
+                        <i data-lucide="shield-lock" class="w-4 h-4 text-amber-400"></i>
+                        <span>Admin Panel</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 relative z-10">
+
+        <!-- STUDENT PORTAL VIEW -->
+        <div id="student-view" class="space-y-6">
+            <!-- Student Registration & Start Card -->
+            <div id="quiz-start-card" class="glass-card rounded-3xl p-8 sm:p-12 shadow-2xl max-w-xl mx-auto relative overflow-hidden">
+                <div class="absolute -right-12 -bottom-12 w-48 h-48 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="w-20 h-20 bg-gradient-to-tr from-indigo-600 to-purple-600 text-white rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-xl shadow-indigo-500/30">
+                    <i data-lucide="brain" class="w-10 h-10"></i>
+                </div>
+                <h2 class="text-3xl font-black mb-2 text-center bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">Quiz Registration</h2>
+                <p class="text-slate-400 text-sm mb-6 text-center">Please enter your credentials to begin the assessment.</p>
+                
+                <form id="student-reg-form" onsubmit="startQuiz(event)" class="space-y-4 mb-8">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5">Full Name</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
+                                <i data-lucide="user" class="w-4 h-4"></i>
+                            </span>
+                            <input type="text" id="student-name-input" required placeholder="e.g. Tanvir Ahmed" class="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-slate-900/80 border border-slate-700/80 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 outline-none transition font-medium text-white placeholder-slate-500">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5">Trade / Department</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
+                                <i data-lucide="briefcase" class="w-4 h-4"></i>
+                            </span>
+                            <input type="text" id="student-trade-input" required placeholder="e.g. Computer Science / Web Dev" class="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-slate-900/80 border border-slate-700/80 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 outline-none transition font-medium text-white placeholder-slate-500">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5">Phone Number</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
+                                <i data-lucide="phone" class="w-4 h-4"></i>
+                            </span>
+                            <input type="tel" id="student-phone-input" required placeholder="e.g. 01700000000" class="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-slate-900/80 border border-slate-700/80 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 outline-none transition font-medium text-white placeholder-slate-500">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4 pt-2">
+                        <div class="bg-slate-900/60 p-4 rounded-2xl border border-white/5 text-center">
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Total Questions</p>
+                            <p id="total-questions-badge" class="text-2xl font-black text-indigo-400">0</p>
+                        </div>
+                        <div class="bg-slate-900/60 p-4 rounded-2xl border border-white/5 text-center">
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Time / Question</p>
+                            <p class="text-2xl font-black text-amber-400"><span id="timer-setting-display">30</span> s</p>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-500 hover:to-pink-500 text-white font-bold py-4 px-8 rounded-2xl shadow-xl shadow-indigo-600/30 transition transform active:scale-95 text-base flex items-center justify-center space-x-2 border border-white/20 mt-4">
+                        <span>Start Quiz Now</span>
+                        <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                    </button>
+                </form>
+            </div>
+
+            <div id="quiz-box" class="hidden glass-card rounded-3xl p-6 sm:p-10 shadow-2xl max-w-2xl mx-auto relative overflow-hidden">
+                <!-- Quiz Header & Live Timer Bar -->
+                <div class="flex justify-between items-center mb-6 pb-4 border-b border-white/10">
+                    <div>
+                        <span id="greeting-student" class="text-xs font-bold text-indigo-400 block tracking-wide">Student: John Doe</span>
+                        <span id="question-progress" class="text-sm font-bold text-white bg-indigo-600/30 px-3.5 py-1 rounded-full border border-indigo-500/30">Question 1 / 10</span>
+                    </div>
+                    <div id="timer-badge" class="flex items-center space-x-2 text-amber-400 font-bold bg-amber-500/10 px-4 py-2 rounded-2xl border border-amber-500/20 shadow-inner transition-all duration-300">
+                        <i data-lucide="clock" class="w-4 h-4 animate-spin"></i>
+                        <span><span id="time-left">30</span> s</span>
+                    </div>
+                </div>
+
+                <!-- Animated Live Progress Bar -->
+                <div class="w-full bg-slate-900/80 rounded-full h-2 mb-8 overflow-hidden border border-white/5">
+                    <div id="timer-progress-bar" class="bg-gradient-to-r from-indigo-500 to-pink-500 h-full w-full transition-all duration-1000 ease-linear"></div>
+                </div>
+
+                <!-- Question Text -->
+                <h3 id="question-text" class="text-xl sm:text-2xl font-bold mb-8 text-white leading-snug">Question text will appear here?</h3>
+
+                <!-- Options Grid -->
+                <div id="options-container" class="space-y-3.5 mb-8">
+                    <!-- Options injected via JS -->
+                </div>
+
+                <!-- Next Button -->
+                <div class="flex justify-end">
+                    <button id="next-btn" onclick="nextQuestion()" class="hidden bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold py-3.5 px-8 rounded-2xl transition shadow-lg shadow-indigo-600/30 flex items-center space-x-2 border border-white/20">
+                        <span>Next Question</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quiz Result Card -->
+            <div id="quiz-result-card" class="hidden glass-card rounded-3xl p-8 sm:p-12 shadow-2xl text-center max-w-xl mx-auto">
+                <div class="w-24 h-24 bg-gradient-to-tr from-emerald-500 to-teal-600 text-white rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-xl shadow-emerald-500/30 animate-bounce">
+                    <i data-lucide="award" class="w-12 h-12"></i>
+                </div>
+                <h2 class="text-2xl sm:text-3xl font-black mb-2 text-white">Congratulations, <span id="result-student-name" class="text-indigo-400"></span>!</h2>
+                <p class="text-slate-400 mb-6">Your quiz session has been completed successfully.</p>
+                
+                <div class="bg-slate-900/80 p-6 rounded-3xl mb-8 border border-white/5 shadow-inner">
+                    <div class="text-5xl font-black bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-2" id="final-score">8 / 10</div>
+                    <p class="text-sm font-semibold text-slate-300" id="result-message">Outstanding performance!</p>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <button onclick="resetQuiz()" class="flex-1 bg-white/5 hover:bg-white/10 font-bold py-3.5 px-6 rounded-2xl transition border border-white/10 flex items-center justify-center space-x-2">
+                        <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                        <span>Retake Quiz</span>
+                    </button>
+                    <button onclick="switchTab('student')" class="flex-1 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 text-white font-bold py-3.5 px-6 rounded-2xl transition shadow-lg shadow-indigo-600/30 border border-white/20 flex items-center justify-center space-x-2">
+                        <i data-lucide="home" class="w-4 h-4"></i>
+                        <span>Back to Home</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="admin-view" class="hidden space-y-8">
+            
+            <!-- Admin Login Lockscreen -->
+            <div id="admin-lockscreen" class="glass-card rounded-3xl p-8 sm:p-10 shadow-2xl text-center max-w-md mx-auto">
+                <div class="w-16 h-16 bg-amber-500/20 text-amber-400 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-inner border border-amber-500/30">
+                    <i data-lucide="shield-check" class="w-8 h-8"></i>
+                </div>
+                <h2 class="text-2xl font-black mb-2 text-white">Admin Authentication</h2>
+                <p class="text-slate-400 text-sm mb-6">Enter admin password to access the management portal. <br><span class="text-xs text-amber-400 font-semibold mt-1 inline-block">(Default Password: profyne123)</span></p>
+                
+                <form onsubmit="handleAdminLogin(event)" class="space-y-4 text-left">
+                    <div>
+                        <input type="password" id="admin-password-input" required placeholder="Enter password..." class="w-full rounded-2xl bg-slate-900/90 border border-slate-700 px-4 py-3.5 focus:ring-2 focus:ring-amber-500 outline-none font-medium text-white placeholder-slate-500">
+                    </div>
+                    <button type="submit" class="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black py-3.5 px-6 rounded-2xl shadow-lg transition flex items-center justify-center space-x-2">
+                        <span>Login to Dashboard</span>
+                        <i data-lucide="log-in" class="w-4 h-4"></i>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Admin Dashboard (Unlocked) -->
+            <div id="admin-dashboard" class="hidden space-y-8">
+                
+                <!-- Dashboard Top Bar -->
+                <div class="glass-card p-6 rounded-3xl flex flex-col sm:flex-row justify-between items-center gap-4 shadow-lg">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center border border-emerald-500/30">
+                            <i data-lucide="user-cog" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-white text-lg">Admin Control Center</h3>
+                            <p class="text-xs text-slate-400">PROFYNE ACADEMY Management Portal</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <button onclick="openSettingsModal()" class="px-4 py-2.5 rounded-xl bg-indigo-500/20 hover:bg-indigo-500/30 text-indigo-300 font-semibold text-sm transition border border-indigo-500/30 flex items-center space-x-2">
+                            <i data-lucide="settings" class="w-4 h-4"></i>
+                            <span>Timer Settings</span>
+                        </button>
+                        <button onclick="handleAdminLogout()" class="text-sm text-rose-400 hover:text-rose-300 bg-rose-500/10 hover:bg-rose-500/20 px-4 py-2.5 rounded-xl font-semibold transition border border-rose-500/20 flex items-center space-x-1.5">
+                            <i data-lucide="log-out" class="w-4 h-4"></i>
+                            <span>Logout</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="glass-card p-6 sm:p-8 rounded-3xl shadow-2xl">
+                    <h2 id="form-title" class="text-xl font-bold mb-6 flex items-center text-indigo-400">
+                        <i data-lucide="plus-circle" class="w-5 h-5 mr-2"></i>Add New Question
+                    </h2>
+                    <form id="question-form" onsubmit="handleFormSubmit(event)" class="space-y-4">
+                        <input type="hidden" id="edit-index" value="-1">
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1">Question Statement</label>
+                            <textarea id="q-text" rows="2" required placeholder="Type question here..." class="w-full rounded-2xl bg-slate-900/90 border border-slate-700 p-3.5 focus:ring-2 focus:ring-indigo-500 outline-none font-medium text-white placeholder-slate-500"></textarea>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1">Option A</label>
+                                <input type="text" id="opt-0" required placeholder="First option" class="w-full rounded-xl bg-slate-900/90 border border-slate-700 p-3 outline-none text-white text-sm placeholder-slate-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1">Option B</label>
+                                <input type="text" id="opt-1" required placeholder="Second option" class="w-full rounded-xl bg-slate-900/90 border border-slate-700 p-3 outline-none text-white text-sm placeholder-slate-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1">Option C</label>
+                                <input type="text" id="opt-2" required placeholder="Third option" class="w-full rounded-xl bg-slate-900/90 border border-slate-700 p-3 outline-none text-white text-sm placeholder-slate-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1">Option D</label>
+                                <input type="text" id="opt-3" required placeholder="Fourth option" class="w-full rounded-xl bg-slate-900/90 border border-slate-700 p-3 outline-none text-white text-sm placeholder-slate-500">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1">Correct Option</label>
+                            <select id="correct-opt" class="w-full rounded-2xl bg-slate-900/90 border border-slate-700 p-3.5 focus:ring-2 focus:ring-indigo-500 outline-none font-medium text-white">
+                                <option value="0">Option A</option>
+                                <option value="1">Option B</option>
+                                <option value="2">Option C</option>
+                                <option value="3">Option D</option>
+                            </select>
+                        </div>
+                        <div class="flex justify-end space-x-3 pt-3">
+                            <button type="button" id="cancel-edit-btn" onclick="cancelEdit()" class="hidden bg-white/5 hover:bg-white/10 font-semibold px-5 py-2.5 rounded-xl transition border border-white/10">Cancel</button>
+                            <button type="submit" id="submit-btn" class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 text-white font-bold px-7 py-3 rounded-xl transition shadow-lg shadow-indigo-600/30 border border-white/20">Save Question</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Manage Questions List -->
+                <div class="glass-card p-6 sm:p-8 rounded-3xl shadow-2xl">
+                    <h2 class="text-xl font-bold mb-4 flex items-center justify-between">
+                        <span class="flex items-center text-white"><i data-lucide="list-checks" class="w-5 h-5 text-indigo-400 mr-2"></i>Question Bank</span>
+                        <span id="admin-total-count" class="text-xs bg-indigo-500/20 text-indigo-300 px-3 py-1.5 rounded-full font-bold border border-indigo-500/30">0 Questions</span>
+                    </h2>
+                    <div id="admin-questions-list" class="space-y-4 max-h-[400px] overflow-y-auto pr-2">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+
+                <div class="glass-card p-6 sm:p-8 rounded-3xl shadow-2xl">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-xl font-bold flex items-center text-white">
+                            <i data-lucide="users" class="w-5 h-5 text-amber-400 mr-2"></i>Student Submissions & Results
+                        </h2>
+                        <button onclick="clearSubmissions()" class="px-3 py-1.5 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 font-semibold text-xs transition border border-rose-500/30 flex items-center space-x-1">
+                            <i data-lucide="trash" class="w-3.5 h-3.5"></i>
+                            <span>Clear History</span>
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm text-slate-300">
+                            <thead class="bg-slate-900/80 uppercase text-[10px] font-bold text-slate-400 tracking-wider border-b border-white/10">
+                                <tr>
+                                    <th class="p-3.5">Student Name</th>
+                                    <th class="p-3.5">Trade</th>
+                                    <th class="p-3.5">Phone Number</th>
+                                    <th class="p-3.5">Score</th>
+                                    <th class="p-3.5">Date & Time</th>
+                                </tr>
+                            </thead>
+                            <tbody id="submissions-table-body" class="divide-y divide-white/5">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Timer Settings Modal -->
+    <div id="settings-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="glass-card rounded-3xl p-6 sm:p-8 max-w-md w-full border border-white/10 shadow-2xl">
+            <h3 class="text-xl font-bold mb-4 text-white flex items-center">
+                <i data-lucide="timer" class="w-5 h-5 text-amber-400 mr-2"></i>Quiz Timer Settings
+            </h3>
+            <p class="text-sm text-slate-400 mb-6">Set countdown limit per question in seconds (Default: 30s).</p>
+            <div class="mb-6">
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Time (in seconds)</label>
+                <input type="number" id="setting-timer-input" min="5" max="120" value="30" class="w-full rounded-2xl bg-slate-900/90 border border-slate-700 p-3.5 text-white font-bold outline-none focus:ring-2 focus:ring-indigo-500">
+            </div>
+            <div class="flex justify-end space-x-3">
+                <button onclick="closeSettingsModal()" class="px-5 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 font-semibold transition border border-white/10">Cancel</button>
+                <button onclick="saveTimerSetting()" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 font-bold text-white shadow-lg shadow-indigo-600/30 transition">Save Setting</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Default Sample Quiz Questions for PROFYNE ACADEMY
+        const defaultQuestions = [
+            {
+                question: "What is the primary focus of PROFYNE ACADEMY training programs?",
+                options: ["Agricultural science", "Modern IT & Professional Skills", "Medical surgery", "Legal consulting"],
+                correct: 1
+            },
+            {
+                question: "Which CSS framework is utilized to create this ultra-sleek web application?",
+                options: ["Bootstrap", "Tailwind CSS", "Foundation", "Bulma"],
+                correct: 1
+            },
+            {
+                question: "What does HTML stand for?",
+                options: ["Hyper Text Markup Language", "High Tech Multi Language", "Hyper Transfer Machine Language", "None of these"],
+                correct: 0
+            }
+        ];
+
+        // Application State
+        let questions = JSON.parse(localStorage.getItem('profyne_quiz_questions')) || defaultQuestions;
+        let submissions = JSON.parse(localStorage.getItem('profyne_quiz_submissions')) || [];
+        let quizTimerLimit = parseInt(localStorage.getItem('profyne_quiz_timer')) || 30;
+        
+        let currentStudent = { name: "", trade: "", phone: "" };
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let selectedOptionIndex = null;
+        let timer = null;
+        let timeLeft = quizTimerLimit;
+        let isAdminLoggedIn = false;
+
+        // Initialize App on Load
+        window.onload = function() {
+            updateTotalQuestionsBadge();
+            renderAdminQuestions();
+            renderSubmissionsTable();
+            checkSavedTheme();
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        };
+
+        // Dark/Light Mode Toggle
+        function toggleDarkMode() {
+            const html = document.documentElement;
+            const icon = document.getElementById('theme-icon');
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                localStorage.setItem('profyne_theme', 'light');
+                icon.setAttribute('data-lucide', 'moon');
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('profyne_theme', 'dark');
+                icon.setAttribute('data-lucide', 'sun');
+            }
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        function checkSavedTheme() {
+            const savedTheme = localStorage.getItem('profyne_theme');
+            const icon = document.getElementById('theme-icon');
+            if (savedTheme === 'light') {
+                document.documentElement.classList.remove('dark');
+                if (icon) icon.setAttribute('data-lucide', 'moon');
+            } else {
+                document.documentElement.classList.add('dark');
+                if (icon) icon.setAttribute('data-lucide', 'sun');
+            }
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        // Tab Navigation
+        function switchTab(tab) {
+            const studentView = document.getElementById('student-view');
+            const adminView = document.getElementById('admin-view');
+            const navStudent = document.getElementById('nav-student');
+            const navAdmin = document.getElementById('nav-admin');
+
+            if (tab === 'student') {
+                studentView.classList.remove('hidden');
+                adminView.classList.add('hidden');
+                navStudent.className = "px-4 sm:px-5 py-2 rounded-xl font-semibold text-sm transition bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg flex items-center space-x-2";
+                navAdmin.className = "px-4 sm:px-5 py-2 rounded-xl font-semibold text-sm transition text-slate-400 hover:text-white flex items-center space-x-2";
+                resetQuizStateUI();
+            } else {
+                studentView.classList.add('hidden');
+                adminView.classList.remove('hidden');
+                navAdmin.className = "px-4 sm:px-5 py-2 rounded-xl font-semibold text-sm transition bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg flex items-center space-x-2";
+                navStudent.className = "px-4 sm:px-5 py-2 rounded-xl font-semibold text-sm transition text-slate-400 hover:text-white flex items-center space-x-2";
+                
+                if (isAdminLoggedIn) {
+                    document.getElementById('admin-lockscreen').classList.add('hidden');
+                    document.getElementById('admin-dashboard').classList.remove('hidden');
+                    renderAdminQuestions();
+                    renderSubmissionsTable();
+                } else {
+                    document.getElementById('admin-lockscreen').classList.remove('hidden');
+                    document.getElementById('admin-dashboard').classList.add('hidden');
+                }
+            }
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        function updateTotalQuestionsBadge() {
+            document.getElementById('total-questions-badge').innerText = questions.length;
+            document.getElementById('timer-setting-display').innerText = quizTimerLimit;
+        }
+
+        // Student Quiz Engine with Registration & Live Timer
+        function startQuiz(event) {
+            event.preventDefault();
+            const name = document.getElementById('student-name-input').value.trim();
+            const trade = document.getElementById('student-trade-input').value.trim();
+            const phone = document.getElementById('student-phone-input').value.trim();
+
+            if (!name || !trade || !phone) {
+                showAlert("Please fill in all registration fields!");
+                return;
+            }
+            if (questions.length === 0) {
+                showAlert("No questions available currently. Please ask admin to add questions.");
+                return;
+            }
+
+            currentStudent = { name, trade, phone };
+            document.getElementById('greeting-student').innerText = `Student: ${currentStudent.name} (${currentStudent.trade})`;
+            currentQuestionIndex = 0;
+            score = 0;
+
+            document.getElementById('quiz-start-card').classList.add('hidden');
+            document.getElementById('quiz-result-card').classList.add('hidden');
+            document.getElementById('quiz-box').classList.remove('hidden');
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            clearInterval(timer);
+            timeLeft = quizTimerLimit;
+            document.getElementById('time-left').innerText = timeLeft;
+            
+            const progressBar = document.getElementById('timer-progress-bar');
+            progressBar.style.width = '100%';
+            progressBar.className = "bg-gradient-to-r from-indigo-500 to-pink-500 h-full transition-all duration-1000 ease-linear";
+
+            startLiveTimer();
+
+            selectedOptionIndex = null;
+            document.getElementById('next-btn').classList.add('hidden');
+
+            const q = questions[currentQuestionIndex];
+            document.getElementById('question-progress').innerText = `Question ${currentQuestionIndex + 1} / ${questions.length}`;
+            document.getElementById('question-text').innerText = q.question;
+
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            q.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 rounded-2xl bg-slate-900/60 border border-white/10 hover:bg-white/10 transition font-medium flex items-center justify-between group text-slate-200 shadow-sm";
+                btn.innerHTML = `<span><span class="inline-block w-8 h-8 rounded-xl bg-white/10 text-center leading-8 mr-3 text-sm font-bold group-hover:bg-indigo-600 group-hover:text-white transition">${String.fromCharCode(65 + index)}</span> ${opt}</span>`;
+                btn.onclick = () => selectOption(index);
+                optionsContainer.appendChild(btn);
+            });
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        function startLiveTimer() {
+            const totalTime = quizTimerLimit;
+            timer = setInterval(() => {
+                timeLeft--;
+                document.getElementById('time-left').innerText = timeLeft;
+                
+                const percentage = (timeLeft / totalTime) * 100;
+                const progressBar = document.getElementById('timer-progress-bar');
+                progressBar.style.width = `${percentage}%`;
+
+                const timerBadge = document.getElementById('timer-badge');
+
+                if (timeLeft <= 5) {
+                    progressBar.className = "bg-gradient-to-r from-rose-500 to-red-600 h-full transition-all duration-1000 ease-linear";
+                    timerBadge.className = "flex items-center space-x-2 text-rose-400 font-bold bg-rose-500/20 px-4 py-2 rounded-2xl border border-rose-500/40 shadow-inner animate-pulse";
+                } else {
+                    timerBadge.className = "flex items-center space-x-2 text-amber-400 font-bold bg-amber-500/10 px-4 py-2 rounded-2xl border border-amber-500/20 shadow-inner";
+                }
+
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    lockAnswersAndShowNext();
+                }
+            }, 1000);
+        }
+
+        function selectOption(index) {
+            clearInterval(timer);
+            selectedOptionIndex = index;
+
+            const optionsContainer = document.getElementById('options-container');
+            const buttons = optionsContainer.getElementsByTagName('button');
+            const correctIndex = questions[currentQuestionIndex].correct;
+
+            for (let i = 0; i < buttons.length; i++) {
+                buttons[i].disabled = true;
+                if (i === correctIndex) {
+                    buttons[i].className = "w-full text-left p-4 rounded-2xl bg-emerald-500/20 border border-emerald-500 text-emerald-300 font-medium flex items-center justify-between transition shadow-lg shadow-emerald-500/10";
+                } else if (i === selectedOptionIndex) {
+                    buttons[i].className = "w-full text-left p-4 rounded-2xl bg-rose-500/20 border border-rose-500 text-rose-300 font-medium flex items-center justify-between transition shadow-lg shadow-rose-500/10";
+                }
+            }
+
+            if (selectedOptionIndex === correctIndex) {
+                score++;
+            }
+
+            document.getElementById('next-btn').classList.remove('hidden');
+        }
+
+        function lockAnswersAndShowNext() {
+            const optionsContainer = document.getElementById('options-container');
+            const buttons = optionsContainer.getElementsByTagName('button');
+            const correctIndex = questions[currentQuestionIndex].correct;
+
+            for (let i = 0; i < buttons.length; i++) {
+                buttons[i].disabled = true;
+                if (i === correctIndex) {
+                    buttons[i].className = "w-full text-left p-4 rounded-2xl bg-emerald-500/20 border border-emerald-500 text-emerald-300 font-medium flex items-center justify-between transition";
+                }
+            }
+            document.getElementById('next-btn').classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                loadQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            clearInterval(timer);
+            document.getElementById('quiz-box').classList.add('hidden');
+            document.getElementById('quiz-result-card').classList.remove('hidden');
+            document.getElementById('result-student-name').innerText = currentStudent.name;
+            document.getElementById('final-score').innerText = `${score} / ${questions.length}`;
+            
+            // Save submission record
+            const submissionRecord = {
+                name: currentStudent.name,
+                trade: currentStudent.trade,
+                phone: currentStudent.phone,
+                score: `${score} / ${questions.length}`,
+                date: new Date().toLocaleString()
+            };
+            submissions.unshift(submissionRecord);
+            localStorage.setItem('profyne_quiz_submissions', JSON.stringify(submissions));
+            renderSubmissionsTable();
+
+            const percentage = (score / questions.length) * 100;
+            let msg = "Keep up the good work!";
+            if (percentage === 100) msg = "Outstanding! You achieved a perfect score!";
+            else if (percentage >= 70) msg = "Great performance!";
+            else if (percentage >= 40) msg = "Satisfactory, room for improvement.";
+            document.getElementById('result-message').innerText = msg;
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        function resetQuiz() {
+            document.getElementById('quiz-result-card').classList.add('hidden');
+            document.getElementById('quiz-start-card').classList.remove('hidden');
+            document.getElementById('student-reg-form').reset();
+            updateTotalQuestionsBadge();
+        }
+
+        function resetQuizStateUI() {
+            document.getElementById('quiz-box').classList.add('hidden');
+            document.getElementById('quiz-result-card').classList.add('hidden');
+            document.getElementById('quiz-start-card').classList.remove('hidden');
+            document.getElementById('student-reg-form').reset();
+            updateTotalQuestionsBadge();
+        }
+
+        // Admin Security & Management Logic
+        function handleAdminLogin(event) {
+            event.preventDefault();
+            const pass = document.getElementById('admin-password-input').value;
+            if (pass === 'profyne123') {
+                isAdminLoggedIn = true;
+                document.getElementById('admin-password-input').value = "";
+                document.getElementById('admin-lockscreen').classList.add('hidden');
+                document.getElementById('admin-dashboard').classList.remove('hidden');
+                renderAdminQuestions();
+                renderSubmissionsTable();
+                showAlert("Successfully logged into Admin Dashboard.");
+            } else {
+                showAlert("Incorrect password! Please try again.");
+            }
+        }
+
+        function handleAdminLogout() {
+            isAdminLoggedIn = false;
+            document.getElementById('admin-dashboard').classList.add('hidden');
+            document.getElementById('admin-lockscreen').classList.remove('hidden');
+            showAlert("Logged out from Admin Dashboard successfully.");
+        }
+
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            const editIndex = parseInt(document.getElementById('edit-index').value);
+            const qText = document.getElementById('q-text').value;
+            const opts = [
+                document.getElementById('opt-0').value,
+                document.getElementById('opt-1').value,
+                document.getElementById('opt-2').value,
+                document.getElementById('opt-3').value
+            ];
+            const correct = parseInt(document.getElementById('correct-opt').value);
+
+            const newQuestion = { question: qText, options: opts, correct: correct };
+
+            if (editIndex === -1) {
+                questions.push(newQuestion);
+            } else {
+                questions[editIndex] = newQuestion;
+                cancelEdit();
+            }
+
+            localStorage.setItem('profyne_quiz_questions', JSON.stringify(questions));
+            document.getElementById('question-form').reset();
+            renderAdminQuestions();
+            updateTotalQuestionsBadge();
+            showAlert("Question saved successfully!");
+        }
+
+        function renderAdminQuestions() {
+            const container = document.getElementById('admin-questions-list');
+            document.getElementById('admin-total-count').innerText = `${questions.length} Questions`;
+            container.innerHTML = '';
+
+            if (questions.length === 0) {
+                container.innerHTML = `<p class="text-center text-slate-400 py-6">No questions saved yet.</p>`;
+                return;
+            }
+
+            questions.forEach((q, index) => {
+                const div = document.createElement('div');
+                div.className = "p-4 sm:p-5 rounded-2xl border border-white/10 bg-slate-900/60 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 shadow-sm";
+                
+                let optionsHtml = '<ul class="text-xs text-slate-400 mt-2 space-y-1">';
+                q.options.forEach((opt, oIdx) => {
+                    const isCorrect = oIdx === q.correct;
+                    optionsHtml += `<li class="${isCorrect ? 'text-emerald-400 font-bold' : ''}">• ${opt} ${isCorrect ? '(Correct Answer)' : ''}</li>`;
+                });
+                optionsHtml += '</ul>';
+
+                div.innerHTML = `
+                    <div class="flex-1">
+                        <span class="text-xs font-bold text-indigo-400 bg-indigo-500/20 px-2.5 py-1 rounded-lg border border-indigo-500/30">Question #${index + 1}</span>
+                        <h4 class="font-bold mt-2 text-white">${q.question}</h4>
+                        ${optionsHtml}
+                    </div>
+                    <div class="flex items-center space-x-2 self-end sm:self-center">
+                        <button onclick="editQuestion(${index})" class="p-2.5 bg-amber-500/20 text-amber-400 rounded-xl hover:bg-amber-500/30 transition border border-amber-500/30" title="Edit"><i data-lucide="pencil" class="w-4 h-4"></i></button>
+                        <button onclick="deleteQuestion(${index})" class="p-2.5 bg-rose-500/20 text-rose-400 rounded-xl hover:bg-rose-500/30 transition border border-rose-500/40" title="Delete"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        function editQuestion(index) {
+            const q = questions[index];
+            document.getElementById('edit-index').value = index;
+            document.getElementById('q-text').value = q.question;
+            document.getElementById('opt-0').value = q.options[0];
+            document.getElementById('opt-1').value = q.options[1];
+            document.getElementById('opt-2').value = q.options[2];
+            document.getElementById('opt-3').value = q.options[3];
+            document.getElementById('correct-opt').value = q.correct;
+
+            document.getElementById('form-title').innerHTML = `<i data-lucide="file-pen" class="w-5 h-5 mr-2"></i>Edit Question #${index + 1}`;
+            document.getElementById('submit-btn').innerText = "Update Question";
+            document.getElementById('cancel-edit-btn').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        function cancelEdit() {
+            document.getElementById('edit-index').value = -1;
+            document.getElementById('question-form').reset();
+            document.getElementById('form-title').innerHTML = `<i data-lucide="plus-circle" class="w-5 h-5 mr-2"></i>Add New Question`;
+            document.getElementById('submit-btn').innerText = "Save Question";
+            document.getElementById('cancel-edit-btn').classList.add('hidden');
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        function deleteQuestion(index) {
+            questions.splice(index, 1);
+            localStorage.setItem('profyne_quiz_questions', JSON.stringify(questions));
+            renderAdminQuestions();
+            updateTotalQuestionsBadge();
+            showAlert("Question deleted successfully!");
+        }
+
+        function renderSubmissionsTable() {
+            const tbody = document.getElementById('submissions-table-body');
+            tbody.innerHTML = '';
+
+            if (submissions.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-slate-400">No student submissions recorded yet.</td></tr>`;
+                return;
+            }
+
+            submissions.forEach((sub) => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-white/5 transition border-b border-white/5";
+                tr.innerHTML = `
+                    <td class="p-3.5 font-semibold text-white">${sub.name}</td>
+                    <td class="p-3.5 text-indigo-300">${sub.trade}</td>
+                    <td class="p-3.5 text-slate-300">${sub.phone}</td>
+                    <td class="p-3.5 font-bold text-emerald-400">${sub.score}</td>
+                    <td class="p-3.5 text-xs text-slate-400">${sub.date}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function clearSubmissions() {
+            if (confirm("Are you sure you want to clear all student submission records?")) {
+                submissions = [];
+                localStorage.removeItem('profyne_quiz_submissions');
+                renderSubmissionsTable();
+                showAlert("Submission history cleared!");
+            }
+        }
+
+        // Timer Settings Modal Functions
+        function openSettingsModal() {
+            document.getElementById('setting-timer-input').value = quizTimerLimit;
+            document.getElementById('settings-modal').classList.remove('hidden');
+        }
+
+        function closeSettingsModal() {
+            document.getElementById('settings-modal').classList.add('hidden');
+        }
+
+        function saveTimerSetting() {
+            const val = parseInt(document.getElementById('setting-timer-input').value);
+            if (val && val >= 5 && val <= 120) {
+                quizTimerLimit = val;
+                localStorage.setItem('profyne_quiz_timer', quizTimerLimit);
+                updateTotalQuestionsBadge();
+                closeSettingsModal();
+                showAlert("Timer limit updated successfully!");
+            } else {
+                showAlert("Please enter a value between 5 and 120 seconds.");
+            }
+        }
+
+        // Custom Notification Popup
+        function showAlert(message) {
+            const existingAlert = document.getElementById('profyne-alert-box');
+            if (existingAlert) existingAlert.remove();
+
+            const alertDiv = document.createElement('div');
+            alertDiv.id = 'profyne-alert-box';
+            alertDiv.className = "fixed bottom-5 right-5 z-50 bg-slate-900 text-white px-6 py-3.5 rounded-2xl shadow-2xl flex items-center space-x-3 border border-indigo-500/40 animate-bounce text-sm font-semibold backdrop-blur-xl";
+            alertDiv.innerHTML = `<i data-lucide="info" class="w-5 h-5 text-indigo-400"></i><span>${message}</span>`;
+            document.body.appendChild(alertDiv);
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 3500);
+        }
+    </script>
+</body>
+</html>
